@@ -61,6 +61,26 @@ for msg in st.session_state.messages:
             st.caption(f"🔧 Tool(s) used: {', '.join(msg['tools_used'])}")
 
 # Chat input
+# user_input = st.chat_input("Ask a question...")
+
+# if user_input:
+#     st.session_state.messages.append({"role": "user", "content": user_input})
+#     with st.chat_message("user"):
+#         st.markdown(user_input)
+
+#     with st.chat_message("assistant"):
+#         with st.spinner("Thinking..."):
+#             answer, tools_used = run_agent(user_input)
+#             st.markdown(answer)
+#             if tools_used:
+#                 st.caption(f"🔧 Tool(s) used: {', '.join(tools_used)}")
+
+#     st.session_state.messages.append({
+#         "role": "assistant",
+#         "content": answer,
+#         "tools_used": tools_used,
+#     })
+
 user_input = st.chat_input("Ask a question...")
 
 if user_input:
@@ -74,10 +94,3 @@ if user_input:
             st.markdown(answer)
             if tools_used:
                 st.caption(f"🔧 Tool(s) used: {', '.join(tools_used)}")
-
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": answer,
-        "tools_used": tools_used,
-    })
-

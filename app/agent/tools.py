@@ -4,12 +4,25 @@ from ddgs import DDGS
 from app.rag.retriever import answer_from_docs
 from app.rag.vector_store import load_vector_store
 
+# @tool
+# def document_qa_tool(question: str) -> str:
+#     """Answer questions using the uploaded document(s). Use this for anything
+#     that could be in the user's uploaded PDF — definitions, explanations,
+#     specific content from the document."""
+#     vectordb = load_vector_store()
+#     answer, sources = answer_from_docs(vectordb, question)
+#     return f"{answer}\n(Sources: pages {sources})"
+
 @tool
 def document_qa_tool(question: str) -> str:
     """Answer questions using the uploaded document(s). Use this for anything
     that could be in the user's uploaded PDF — definitions, explanations,
     specific content from the document."""
-    vectordb = load_vector_store()
+    try:
+        vectordb = load_vector_store()
+    except ValueError:
+        return "No document has been uploaded yet. Please upload and process a PDF first, or ask a general question instead."
+
     answer, sources = answer_from_docs(vectordb, question)
     return f"{answer}\n(Sources: pages {sources})"
 
