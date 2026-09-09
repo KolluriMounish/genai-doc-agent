@@ -3,7 +3,7 @@ import streamlit as st
 from app.ingestion.loader import load_and_chunk_pdf
 from app.rag.vector_store import build_vector_store
 from app.agent.graph import run_agent
-#import shutil
+import shutil
 
 st.set_page_config(page_title="Enterprise Doc & Data Assistant", page_icon="🤖", layout="centered")
 
@@ -24,19 +24,19 @@ with st.sidebar:
     uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
 
     if uploaded_file is not None:
-        # if st.button("Process document"):
-        #     with st.spinner("Reading, chunking, and embedding your document..."):
-        #         file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
-        #         with open(file_path, "wb") as f:
-        #             f.write(uploaded_file.getbuffer())
+        if st.button("Process document"):
+            with st.spinner("Reading, chunking, and embedding your document..."):
+                file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
 
-        #         chunks = load_and_chunk_pdf(file_path)
-        #         build_vector_store(chunks)
+                chunks = load_and_chunk_pdf(file_path)
+                build_vector_store(chunks)
 
-        #         st.session_state.doc_ready = True
-        #         st.session_state.doc_name = uploaded_file.name
+                st.session_state.doc_ready = True
+                st.session_state.doc_name = uploaded_file.name
 
-        #     st.success(f"'{uploaded_file.name}' processed — {len(chunks)} chunks indexed.")
+            st.success(f"'{uploaded_file.name}' processed — {len(chunks)} chunks indexed.")
 
 
         if st.session_state.doc_ready:
