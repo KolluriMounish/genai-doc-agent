@@ -97,19 +97,3 @@ if user_input:
         "tools_used": tools_used,
     })
 
-if st.button("Process document"):
-    with st.spinner("Reading, chunking, and embedding your document..."):
-        if os.path.exists("chroma_db"):
-            shutil.rmtree("chroma_db")
-
-        file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-
-        chunks = load_and_chunk_pdf(file_path)
-        build_vector_store(chunks)
-
-        st.session_state.doc_ready = True
-        st.session_state.doc_name = uploaded_file.name
-
-    st.success(f"'{uploaded_file.name}' processed — {len(chunks)} chunks indexed.")
