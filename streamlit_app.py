@@ -3,7 +3,7 @@ import streamlit as st
 from app.ingestion.loader import load_and_chunk_pdf
 from app.rag.vector_store import build_vector_store
 from app.agent.graph import run_agent
-import shutil
+#import shutil
 
 st.set_page_config(page_title="Enterprise Doc & Data Assistant", page_icon="🤖", layout="centered")
 
@@ -38,32 +38,16 @@ with st.sidebar:
 
         #     st.success(f"'{uploaded_file.name}' processed — {len(chunks)} chunks indexed.")
 
-        if st.button("Process document"):
-            with st.spinner("Reading, chunking, and embedding your document..."):
-                if os.path.exists("chroma_db"):
-                    shutil.rmtree("chroma_db")
 
-                file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
-                with open(file_path, "wb") as f:
-                    f.write(uploaded_file.getbuffer())
+        if st.session_state.doc_ready:
+            st.info(f"Active document: **{st.session_state.doc_name}**")
 
-                chunks = load_and_chunk_pdf(file_path)
-                build_vector_store(chunks)
-
-                st.session_state.doc_ready = True
-                st.session_state.doc_name = uploaded_file.name
-
-            st.success(f"'{uploaded_file.name}' processed — {len(chunks)} chunks indexed.")
-
-    if st.session_state.doc_ready:
-        st.info(f"Active document: **{st.session_state.doc_name}**")
-
-    st.divider()
-    st.caption(
-        "This assistant can answer from your uploaded document, "
-        "search the web for current info, or do quick calculations — "
-        "it decides automatically."
-    )
+        st.divider()
+        st.caption(
+            "This assistant can answer from your uploaded document, "
+            "search the web for current info, or do quick calculations — "
+            "it decides automatically."
+        )
 
 # ---- Main chat area ----
 st.title("🤖 Enterprise Doc & Data Assistant")
